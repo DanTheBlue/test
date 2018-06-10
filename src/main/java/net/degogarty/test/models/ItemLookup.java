@@ -25,7 +25,7 @@ public class ItemLookup {
     }
 
     public static int getCost(String name) {
-        
+
         return getItemFromItemName(ItemName.valueOf(name)).cost;
     }
 
