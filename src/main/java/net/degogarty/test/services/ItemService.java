@@ -39,12 +39,17 @@ public class ItemService {
     }
     
     public void applyOrangeDiscount(Cart cart) {
-        if(countItemsWithName(cart, "orange") >= orangeCount) {
-            cart.addToDiscount(orangeDiscount);
-        }
+        int orangeDiscountAmount = countItemsWithName(cart, "orange") / orangeCount;
+        cart.addToDiscount(orangeDiscount * orangeDiscountAmount);
     }
 
-    private int countItemsWithName(Cart cart, String name) {
-        return Collections.frequency(cart.getItems(), name);
+    public int countItemsWithName(Cart cart, String name) {
+        int finalCount = 0;
+        for (Item item: cart.getItems()) {
+            if(item.getName().equalsIgnoreCase(name)) {
+                finalCount++;
+            }
+        }
+        return finalCount;
     }
 }

@@ -9,7 +9,7 @@ public class Receipt {
         for (Item item: cart.getItems()) {
             totalCost = totalCost + item.getCost();
         }
-        this.totalCost = totalCost;
+        this.totalCost = totalCost - cart.getDiscount();
     }
 
     public int getTotalCost() {
