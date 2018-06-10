@@ -25,6 +25,7 @@ public class ItemServiceTest {
         items.add(new Apple());
         items.add(new Apple());
         Cart cart = new Cart(items);
+        itemService.applyAppleDiscount(cart);
         assertThat(cart.getDiscount(), is(equalTo(60)));
     }
 
