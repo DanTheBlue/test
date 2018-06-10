@@ -1,9 +1,9 @@
 package net.degogarty.test.models;
 
-public class Apple extends Item {
+public class Orange extends Item {
 
-    private int cost = 60;
-    private String name = "apple";
+    private int cost = 25;
+    private String name = "orange";
 
     @Override
     public int getCost() {

@@ -4,5 +4,5 @@ public abstract class Item {
 
     abstract public int getCost();
 
-    abstract public String getName();
+    abstract  String getName();
 }
