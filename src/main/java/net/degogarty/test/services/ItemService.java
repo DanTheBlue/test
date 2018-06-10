@@ -8,10 +8,17 @@ import net.degogarty.test.models.Orange;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
 public class ItemService {
+
+    private final int appleCount = 3;
+    private final int appleDiscount = 60;
+
+    private final int orangeCount = 3;
+    private final int orangeDiscount = 25;
 
     public Cart convertToCart(List<String> items) {
         List<Item> stringItems = new ArrayList<>();
@@ -24,5 +31,20 @@ public class ItemService {
             }
         }
         return new Cart(stringItems);
+    }
+
+    public void applyAppleDiscount(Cart cart) {
+        int appleDiscountAmount = countItemsWithName(cart, "apple") / appleCount;
+        cart.addToDiscount(appleDiscount * appleDiscountAmount);
+    }
+    
+    public void applyOrangeDiscount(Cart cart) {
+        if(countItemsWithName(cart, "orange") >= orangeCount) {
+            cart.addToDiscount(orangeDiscount);
+        }
+    }
+
+    private int countItemsWithName(Cart cart, String name) {
+        return Collections.frequency(cart.getItems(), name);
     }
 }

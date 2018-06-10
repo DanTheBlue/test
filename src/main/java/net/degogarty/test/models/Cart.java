@@ -5,9 +5,18 @@ import java.util.List;
 public class Cart {
 
     private List<Item> items;
+    private int discount;
 
     public Cart(List<Item> items) {
         this.items = items;
+    }
+
+    public void addToDiscount(int newDiscount) {
+        this.discount = discount + newDiscount;
+    }
+
+    public int getDiscount() {
+        return discount;
     }
 
     public List<Item> getItems() {
