@@ -4,10 +4,10 @@ import java.util.List;
 
 public class Cart {
 
-    private List<Item> items;
+    private List<String> items;
     private int discount;
 
-    public Cart(List<Item> items) {
+    public Cart(List<String> items) {
         this.items = items;
     }
 
@@ -19,11 +19,7 @@ public class Cart {
         return discount;
     }
 
-    public List<Item> getItems() {
+    public List<String> getItems() {
         return items;
-    }
-
-    public void setItems(List<Item> items) {
-        this.items = items;
     }
 }

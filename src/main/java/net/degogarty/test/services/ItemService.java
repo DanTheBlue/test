@@ -1,57 +1,46 @@
 package net.degogarty.test.services;
 
 
-import net.degogarty.test.models.Apple;
-import net.degogarty.test.models.Cart;
-import net.degogarty.test.models.Item;
-import net.degogarty.test.models.Orange;
+import net.degogarty.test.models.*;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collections;
+
 
 @Service
 public class ItemService {
 
-    private final int bogofCount = 2;
-    private final int appleDiscount = 60;
-    private final int bananaDiscount = 20;
 
-    private final int orangeCount = 3;
-    private final int orangeDiscount = 25;
-
-
-    public Cart convertToCart(List<String> items) {
-        List<Item> stringItems = new ArrayList<>();
-        for (String item: items) {
-            switch(item) {
-                case "apple": stringItems.add(new Apple());
-                    break;
-                case "orange" : stringItems.add(new Orange());
-                    break;
-            }
-        }
-        return new Cart(stringItems);
+    public void applyDiscounts(Cart cart) {
+        applyBogofDiscount(cart);
+        applyOrangeDiscount(cart);
     }
 
-    public void applyAppleDiscount(Cart cart) {
-        int appleDiscountAmount = countItemsWithName(cart, "apple") / bogofCount;
-        int bananaDiscountAmount = countItemsWithName(cart, "banana") / bogofCount;
-        cart.addToDiscount(appleDiscount * appleDiscountAmount);
+    /**
+     * Applies the bogof discount, which applies to both bananas and apples
+     * @param cart to check and apply the discount if needed
+     */
+    private void applyBogofDiscount(Cart cart) {
+        int bananaAmount = countItemsWithName(cart, ItemName.BANANA);
+        int appleAmount = countItemsWithName(cart, ItemName.APPLE);
+
+        int totalDiscount = (bananaAmount + appleAmount) / ItemLookup.BOGOF_DISCOUNT_LIMIT;
+
+        for (int i = 0; i < totalDiscount; i++) {
+            if(bananaAmount > i) {
+                cart.addToDiscount(ItemLookup.getDiscountLimit(ItemName.BANANA));
+            } else {
+                cart.addToDiscount(ItemLookup.getDiscountLimit(ItemName.APPLE));
+            }
+        }
     }
     
-    public void applyOrangeDiscount(Cart cart) {
-        int orangeDiscountAmount = countItemsWithName(cart, "orange") / orangeCount;
-        cart.addToDiscount(orangeDiscount * orangeDiscountAmount);
+    private void applyOrangeDiscount(Cart cart) {
+        int orangeDiscountAmount = countItemsWithName(cart, ItemName.ORANGE) / ItemLookup.getDiscountLimit(ItemName.ORANGE);
+        cart.addToDiscount(ItemLookup.getCost(ItemName.ORANGE) * orangeDiscountAmount);
     }
 
-    public int countItemsWithName(Cart cart, String name) {
-        int finalCount = 0;
-        for (Item item: cart.getItems()) {
-            if(item.getName().equalsIgnoreCase(name)) {
-                finalCount++;
-            }
-        }
-        return finalCount;
+    private int countItemsWithName(Cart cart, ItemName name) {
+        return Collections.frequency(cart.getItems(), name.toString());
     }
 }

@@ -21,11 +21,9 @@ public class CartController {
 
     @PostMapping
     public Receipt createCart(@RequestBody List<String> itemsList) {
-        Cart cart = itemsService.convertToCart(itemsList);
+        Cart cart = new Cart(itemsList);
 
-        itemsService.applyAppleDiscount(cart);
-        itemsService.applyOrangeDiscount(cart);
-
+        itemsService.applyDiscounts(cart);
         return new Receipt(cart);
     }
 }
